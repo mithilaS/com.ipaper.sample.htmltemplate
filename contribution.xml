@@ -12,6 +12,8 @@
 		propertySheetPath="res/additional_properties_sheet/additional_properties_sheet.html">
 
 		<jsInclude>res/js/component.js</jsInclude>
+		<jsInclude>http://cdn3.devexpress.com/jslib/13.2.5/js/dx.chartjs.js</jsInclude>
+		<jsInclude>http://ajax.aspnetcdn.com/ajax/globalize/0.1.1/globalize.min.js</jsInclude>
 
 		<property id="HTML" type="String" title="HTML" group="Display" />
 		<property id="afterInit" type="String" title="After Init (JS)" group="Display" />
