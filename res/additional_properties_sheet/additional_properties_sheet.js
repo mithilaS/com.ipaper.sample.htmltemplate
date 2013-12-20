@@ -1,56 +1,135 @@
 sap.designstudio.sdk.PropertyPage.subclass("com.sap.sample.ipaper.htmltemplate.HTMLPropertyPage",  function() {
-
 	var that = this;
 	this.htmlEditor = null;
+	this.jsEditor = null;
+	this.rendered = false;
+	this.splitter = null;
+	this.htmlPlaceholder = null;
+	this.jsPlaceholder = null;
 	
-	this.init = function() {
+	// 	this.callRuntimeHandler("sampleFunction", "arg1", "arg2");
+	
+	this.componentSelected = function(){
+		//alert("!");
+	};
+	this.afterRendering = function(){
 		// HTML Editor
-		this.htmlEditor = CodeMirror.fromTextArea(document.getElementById("htmlValue"), {
+		this.htmlEditor = CodeMirror(function(e){
+			that.htmlPlaceholder.$().css({overflowX : "hide"});
+			that.htmlPlaceholder.getDomRef().appendChild(e);
+		},{
 			lineNumbers: true,
 			mode: "text/html",
 			theme: "eclipse",
 			matchBrackets: true
 		});
-		this.htmlEditor.on("change",function(cMirror){
-			$("#htmlValue").val(cMirror.getValue());
-		});
+		
 		// JS Editor
-		this.jsEditor = CodeMirror.fromTextArea(document.getElementById("afterInitValue"), {
+		
+		this.jsEditor = CodeMirror(function(e){
+			that.jsPlaceholder.getDomRef().appendChild(e);
+		},{
 			lineNumbers: true,
 			mode: "text/javascript",
 			theme: "eclipse",
 			matchBrackets: true
 		});
-		this.jsEditor.on("change",function(cMirror){
-			$("#afterInitValue").val(cMirror.getValue());
+		
+		this.rendered = true;
+	};
+	this.init = function() {
+		this.splitter = new sap.ui.commons.Splitter({});
+		this.splitter.setSplitterOrientation(sap.ui.commons.Orientation.horizontal);
+		this.splitter.setSplitterPosition("50%");
+		this.splitter.setMinSizeFirstPane("20%");
+		this.splitter.setMinSizeSecondPane("20%");
+		this.splitter.setWidth("100%");
+		this.splitter.setHeight("100%");
+
+		this.htmlPlaceholder = new sap.ui.core.HTML({
+			content : "<div></div>",
+			width: "100%",
+			height: "100%"
 		});
-		// Form Submission Event Listener
-		$("#form").submit(function() {
-			that.firePropertiesChanged(["HTML"]);
-			return false;
+		this.jsPlaceholder = new sap.ui.core.HTML({
+			content : "<div></div>",
+			width: "100%",
+			height: "100%"
 		});
-		$("#form").submit(function() {
-			that.firePropertiesChanged(["afterInit"]);
-			return false;
+		
+		
+		this.splitter.addFirstPaneContent(new sap.ui.commons.layout.BorderLayout({
+			width: "100%",
+			height: "100%",
+			center: new sap.ui.commons.layout.BorderLayoutArea({
+				content : [
+				    this.htmlPlaceholder
+				]
+			}),
+			top : new sap.ui.commons.layout.BorderLayoutArea({
+				size : "30px",
+				content : [
+					new sap.ui.commons.Label({
+						text : "HTML",
+						design : sap.ui.commons.LabelDesign.Bold 
+					})    
+				]
+			})           
+		}));
+		this.splitter.addSecondPaneContent(new sap.ui.commons.layout.BorderLayout({
+			width: "100%",
+			height: "100%",
+			center: new sap.ui.commons.layout.BorderLayoutArea({
+				content : [
+				    this.jsPlaceholder
+				]
+			}),
+			top : new sap.ui.commons.layout.BorderLayoutArea({
+				size : "30px",
+				content : [
+					new sap.ui.commons.Label({
+						text : "JavaScript",
+						design : sap.ui.commons.LabelDesign.Bold 
+					})    
+				]
+			}),
+			bottom : new sap.ui.commons.layout.BorderLayoutArea({
+				size : "30px",
+				content : [
+				new sap.ui.commons.Button({
+					text:"Apply", 
+					tooltip:"Apply",
+					press: function(){
+						that.firePropertiesChanged(["HTML"]);
+						that.firePropertiesChanged(["afterInit"]);
+					}
+				})]
+			})               
+		}));
+		this.splitter.placeAt("splitterDiv");
+		this.splitter.addEventDelegate({
+			onAfterRendering : function(o){
+				return function() {
+					o.afterRendering.call(o);
+				};
+			}(this)
 		});
 	};
 	
 	this.afterInit = function(value){
 		if( value === undefined){
-			return $("#afterInitValue").val();
+			return this.jsEditor.getValue();
 		}else{
-			$("#afterInitValue").val(value);
-			this.jsEditor.setValue(value);
+			if(this.rendered == true) this.jsEditor.setValue(value);
 			return this;
 		}
 	};
 	
 	this.HTML = function(value) {
 		if (value === undefined) {
-			return $("#htmlValue").val();
+			return this.htmlEditor.getValue();
 		}else{
-			$("#htmlValue").val(value);
-			this.htmlEditor.setValue(value);
+			if(this.rendered == true) this.htmlEditor.setValue(value);
 			return this;
 		}
 	};

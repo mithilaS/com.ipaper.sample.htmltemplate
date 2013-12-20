@@ -4,6 +4,7 @@
 		<title>Colored Box Property Sheet</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<script src="/aad/zen.rt.components.sdk/resources/js/sdk_propertysheets_handler.js"></script>
+		<script src="/aad/resources/sap-ui-cachebuster/sap-ui-core-dbg.js" type="text/javascript" id="sap-ui-bootstrap" data-sap-ui-theme="sap_goldreflection"	data-sap-ui-libs="sap.ui.ux3, sap.ui.commons, sap.ui.table"></script>
 		<link rel=stylesheet href="codemirror/lib/codemirror.css">
 		<link rel=stylesheet href="codemirror/doc/docs.css">
 		<link rel=stylesheet href="codemirror/theme/eclipse.css">
@@ -15,63 +16,20 @@
 		<script src="codemirror/addon/edit/matchbrackets.js"></script>
 		<script src="additional_properties_sheet.js"></script>
 	    <style type="text/css">
-	    	.CodeMirror pre {
-    			height:15px;	/* Looks like weird IE bug */
-			}
-			/*.CodeMirror-linenumbers {
-				width: 30px;
-			}*/
-			
-      		body, table, input {
-        		background-color: #efefef;
-        		font-family: sans-serif;
-        		font-size: 8pt;
-      		}
-      		fieldset {
-      			font-weight: bold;
-      		}
-      		form, td, tr {
-				width: 100%;			
-      		}
-      		textarea {
-      			font-size: 8pt;
-      		}
-      		#htmlValue, #afterInitValue {
-      			width: 99%;
-      			border: 1px solid #c0c0c0;
-      			height: 300px;
-      		}
+	    	.CodeMirror {
+  border: 1px solid #eee;
+  height: 100%;
+}
+.CodeMirror-scroll {
+  overflow-y: hidden;
+  overflow-x: auto;
+}
     	</style>
 	</head>
 	<script type="text/javascript">
-	new com.sap.sample.ipaper.htmltemplate.HTMLPropertyPage();
-	$(function(){
-		// Maybe use for later
-	});
+		new com.sap.sample.ipaper.htmltemplate.HTMLPropertyPage();
 	</script>
 	<body>
-		<form id="form">
-			<fieldset>
-				<legend>HTML Template Properties</legend>
-				<table style="width:100%;">
-					<tr>
-						<td><strong>HTML</strong></td>
-					</tr>
-					<tr>
-						<td><TEXTAREA id="htmlValue" name="htmlValue"></TEXTAREA></td>					
-					</tr>
-					<tr>
-						<td><strong>After Init (JS)</strong></td>
-					</tr>
-					<tr>
-						<td><TEXTAREA id="afterInitValue" name="afterInitValue"></TEXTAREA></td>					
-					</tr>
-					<tr>
-						<td><input type="submit" value="Apply" /></td>
-					</tr>
-
-				</table>
-			</fieldset>
-		</form>
+		<div id="splitterDiv" style="height:100%;width:100%;"></div>				
 	</body>
 </html>
